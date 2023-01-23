@@ -43,10 +43,10 @@ composer require elgibor-solution/laravel-database-encryption
 ### Step 2: Add ServiceProvider to your app/config.php file (Laravel 5.4 or below)
 Add the service provider to the providers array in the config/app.php config file as follows:
 ```php
-    'providers' => [
-        ...
-        \ESolution\DBEncryption\Providers\DBEncryptionServiceProvider::class,
-    ],
+'providers' => [
+    ...
+    \ESolution\DBEncryption\Providers\DBEncryptionServiceProvider::class,
+],
 ```
 
 ## Usage
@@ -129,12 +129,12 @@ For example:
 Logging-in on encrypted email
 ```php
 $user = User::whereEncrypted('email','test@gmail.com')
-			->filter(function ($item) use ($request) {
-				return Hash::check($password, $item->password);
-			}
-		)
-		->where('active',1)
-		->first();
+    ->filter(function ($item) use ($request) {
+        return Hash::check($password, $item->password);
+    }
+)
+->where('active',1)
+->first();
 ```
 
 ## Credits
