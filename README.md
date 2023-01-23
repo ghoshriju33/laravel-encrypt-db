@@ -37,7 +37,7 @@ We highly recommend to alter your column types to `TEXT` or `LONGTEXT`
 Via Composer command line:
 
 ```bash
-$ composer require elgibor-solution/laravel-database-encryption
+composer require elgibor-solution/laravel-database-encryption
 ```
 
 ### Step 2: Add ServiceProvider to your app/config.php file (Laravel 5.4 or below)
@@ -57,21 +57,18 @@ to and define a `protected $encrypted` array containing a list of the attributes
 For example:
 
 ```php
-    
-    use ESolution\DBEncryption\Traits\EncryptedAttribute;
-
-    class User extends Eloquent {
-        use EncryptedAttribute;
-       
-        /**
-         * The attributes that should be encrypted on save.
-         *
-         * @var array
-         */
-        protected $encryptable = [
-            'first_name', 'last_name'
-        ];
-    }
+class User extends Eloquent {
+    use EncryptedAttribute;
+        
+    /**
+    * The attributes that should be encrypted on save.
+    *
+    * @var array
+    */
+    protected $encryptable = [
+        'first_name', 'last_name'
+    ];
+}
 ```
 
 By including the `EncryptedAttribute` trait, the `setAttribute()`, `getAttribute()` and `getAttributeFromArray()`
@@ -83,18 +80,19 @@ similar to laravel eloquent `where` and `orWhere`.
 
 
 ```php
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use App\User;
-    class UsersController extends Controller {
-        public function index(Request $request)
-        {
-            $user = User::whereEncrypted('first_name','john')
-                        ->orWhereEncrypted('last_name','!=','Doe')->firstOrFail();
+use App\User;
+class UsersController extends Controller {
+    public function index(Request $request)
+    {
+        $user = User::whereEncrypted('first_name','john')
+                    ->orWhereEncrypted('last_name','!=','Doe')
+                    ->firstOrFail();
             
-            return $user;
-        }
+        return $user;
     }
+}
 ```
 
 ### Encrypt your current data
@@ -108,17 +106,19 @@ similar to laravel eloquent `where` and `orWhere`.
 
 ### Exists and Unique Validation Rules
  If you are using exists and unique rules with encrypted values replace it with exists_encrypted and unique_encrypted 
-    ```php      
-      $validator = validator(['email'=>'foo@bar.com'], ['email'=>'exists_encrypted:users,email']);
-      $validator = validator(['email'=>'foo@bar.com'], ['email'=>'unique_encrypted:users,email']);
-    ```
+```php
+$validator = validator(['email'=>'foo@bar.com'], ['email'=>'exists_encrypted:users,email']);
+$validator = validator(['email'=>'foo@bar.com'], ['email'=>'unique_encrypted:users,email']);
+```
 
 ## Frequently Asked Question
 #### Can I search encrypted data?
 YES! You will able to search on attributes which are encrypted by this package because.
 If you need to search on data then use the `whereEncrypted` and `orWhereEncrypted` function:
-```
-    User::whereEncrypted('email','test@gmail.com')->orWhereEncrypted('email','test2@gmail.com')->firstOrFail();
+```php
+User::whereEncrypted('email','test@gmail.com')
+	->orWhereEncrypted('email','test2@gmail.com')
+	->firstOrFail();
 ```
 It will automatically added on the eloquent once the model uses `EncryptedAttribute`
 
@@ -127,16 +127,23 @@ Aside from IDs you can encrypt everything you wan't
 
 For example:
 Logging-in on encrypted email
-```
-$user = User::whereEncrypted('email','test@gmail.com')->filter(function ($item) use ($request) {
-        return Hash::check($password, $item->password);
-    })->where('active',1)->first();
+```php
+$user = User::whereEncrypted('email','test@gmail.com')
+			->filter(function ($item) use ($request) {
+				return Hash::check($password, $item->password);
+			}
+		)
+		->where('active',1)
+		->first();
 ```
 
 ## Credits
 This package was inspired from the following:
+
  [austinheap/laravel-database-encryption](https://github.com/austinheap/laravel-database-encryption)
+ 
  [magros/laravel-model-encryption](https://github.com/magros/laravel-model-encryption)
+ 
  [DustApplication/laravel-database-model-encryption](https://github.com/DustApplication/laravel-database-model-encryption.git)
  
 ## License
